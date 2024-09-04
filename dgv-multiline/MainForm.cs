@@ -14,15 +14,11 @@ namespace dgv_multiline
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView.CellValidating += (sender, e) =>
-            {
-                Debug.WriteLine(
-                    $"Ensure that only one cell validation per commit {dataGridView.CurrentCell?.Value}");
-            };
             dataGridView.EditingControlShowing += (sender, e) =>
             {
                 if (e.Control is TextBox textBox)
                 {
+                    Debug.Assert(textBox.Multiline, "Already true, and this is due to WrapMode property setting");
                     _revertText = textBox.Text;
                     textBox.TextChanged -= localOnTextChanged;
                     textBox.PreviewKeyDown -= localPreviewKeyDown;
@@ -31,7 +27,7 @@ namespace dgv_multiline
 
                     void localOnTextChanged(object? sender, EventArgs e)
                     {
-                        BeginInvoke(() =>
+                        BeginInvoke(() => // Because drawing artifacts have been known to occur otherwise.
                         {
                             dataGridView.CurrentCell.Value = textBox.Text;
                         });
@@ -44,6 +40,11 @@ namespace dgv_multiline
                         }
                     }
                 }
+            };
+            dataGridView.CellValidating += (sender, e) =>
+            {
+                Debug.WriteLine(
+                    $"Ensure that, regardless, only one cell validation happens per commit {dataGridView.CurrentCell?.Value}");
             };
             Records.Add(new Record());
         }
