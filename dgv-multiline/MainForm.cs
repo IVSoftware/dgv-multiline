@@ -12,7 +12,6 @@ namespace dgv_multiline
             base.OnLoad(e);
             dataGridView.DataSource = Records;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView.Columns[nameof(Record.Description)].Width = 150;
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView.CellValidating += (sender, e) =>
