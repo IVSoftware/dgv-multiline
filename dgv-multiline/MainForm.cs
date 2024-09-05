@@ -27,9 +27,10 @@ namespace dgv_multiline
 
                     void localOnTextChanged(object? sender, EventArgs e)
                     {
+                        Debug.WriteLine($"{textBox.Lines.Length}");
                         BeginInvoke(() => // Because drawing artifacts have been known to occur otherwise.
                         {
-                            dataGridView.CurrentCell.Value = textBox.Text;
+                            // dataGridView.CurrentCell.Value = textBox.Text;
                         });
                     }
                     void localPreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
